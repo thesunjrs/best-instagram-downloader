@@ -12,13 +12,13 @@ def log(log_message):
     if not log_channel_id:
         return # set to False log channel means it is not needed
 
-    log_bot_url = "https://api.telegram.org/bot" + bot_token + "/"
+    log_bot_url = f"https://api.telegram.org/bot{bot_token}/"
 
-    log = requests.post(log_bot_url + "sendMessage", data={
-        "chat_id": log_channel_id,
-        "text": log_message
-    })
-    
+    log = requests.post(
+        f"{log_bot_url}sendMessage",
+        data={"chat_id": log_channel_id, "text": log_message},
+    )
+
     # Check if the log was sent successfully
     if log.status_code == 200:
         print('log registered')
@@ -60,8 +60,7 @@ def download_post_to_folder(post_shortcode, folder):
     L.download_post(post, target=folder)
 
 def get_post_or_reel_shortcode_from_link(link):
-    match = re.search(insta_post_or_reel_reg, link)
-    if match:
+    if match := re.search(insta_post_or_reel_reg, link):
         return match.group(2)
     else:
         return False
